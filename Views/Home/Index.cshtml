@@ -1,0 +1,38 @@
+﻿@model IEnumerable<EntityFramework.Models.Quiz>
+
+@{
+    ViewData["Title"] = "Home Page";
+   
+
+    
+}
+<p>Please select how many questions do you want for every section</p>
+
+<form action="Home/CreateQuiz" method="POST">
+    
+    <div class="form-group">
+       <label>Easy</label>
+       <input type="number" min=0 max="@(ViewBag.howmanyQuestionsEasy)" name="easy" value="0"/> 
+   </div>
+   <div class="form-group">
+       <label>Medium</label>
+       <input type="number" min=0 max="@(ViewBag.howmanyQuestionsMedium)" name="medium" value="0" /> 
+   </div>
+   <div class="form-group">
+       <label>Hard</label>
+       <input type="number" min=0 max="@(ViewBag.howmanyQuestionsHard)" name="hard" value="0" /> 
+   </div>
+    <div class="form-group">
+       <label>User</label>
+       <select name="quizId">
+          @foreach (Quiz item in Model)
+         {
+           <option value="@item.QuizId">@item.UserName</option>  
+         }
+     </select>     
+   </div>
+
+
+  <input type="submit" value="Submit" />
+  <p id="demo"></p>
+</form>

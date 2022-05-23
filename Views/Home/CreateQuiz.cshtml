@@ -1,0 +1,33 @@
+﻿@model IEnumerable<EntityFramework.Models.Question>
+
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@if(Model.Count()>0)
+{
+   <form action="Score" method="POST">
+    
+    @foreach(Question q in Model)
+    {
+        <div class="form-group">
+            <label>@q.Text</label>
+            <select name="question">
+                @foreach (var answer in (ViewData["Answers"] as IEnumerable<ItemOption>).Where(x => x.QuestionId == q.QuestionId))
+                {
+                    <option value="@answer.OptionId">@answer.Text</option>
+                }
+            </select>
+        </div>
+        
+    }
+    
+  <input type="submit" value="Submit" />
+</form> 
+} else {
+    <h1>The user already has questions</h1>
+}
+

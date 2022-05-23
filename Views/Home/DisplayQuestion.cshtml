@@ -1,0 +1,23 @@
+﻿@model IEnumerable<EntityFramework.Models.Question>
+@{
+    ViewData["Title"] = "DisplayQuestion";
+}
+     
+
+<form action="Home/DisplayQuestion" method="POST">
+ 
+ 
+        
+@foreach(Question categories in Model)
+{
+    <div>
+        <label>@categories.Text</label>
+        <input type="text" name="id" />
+    </div>
+}       
+  <input type="submit" value="Submit" />
+  <p id="demo"></p>
+</form>
+
+      
+
