@@ -20,6 +20,7 @@ namespace EntityFramework.Controllers
         public static List<int> howManyQuestions;
         public static List<string> questionsInCategory;
         public static List<int> counter;
+        public static int personId;
         
 
 
@@ -52,28 +53,28 @@ namespace EntityFramework.Controllers
             
             if(easy !=0)
             {
-                for (int i = 1; i <= easy; i++)
+                for (int i = 0; i < easy; i++)
                 {
-                    int number = easyrandom.Next(easy);
-                    questions.Add(easyCatList[number]);
+                    //int number = easyrandom.Next(easy-1);
+                    questions.Add(easyCatList[i]);
                 }
             }
 
             if (medium != 0)
             {
-                for (int i = 1; i <= medium; i++)
+                for (int i = 0; i < medium; i++)
                 {
-                    int number = mediumrandom.Next(medium);
-                    questions.Add(mediumCatList[number]);
+                    //int number = mediumrandom.Next(medium);
+                    questions.Add(mediumCatList[i]);
                 }
             }
 
             if (hard != 0)
             {
-                for (int i = 1; i <= hard; i++)
+                for (int i = 0; i < hard; i++)
                 {
-                    int number = hardrandom.Next(hard);
-                    questions.Add(hardCatList[number]);
+                    //int number = hardrandom.Next(hard);
+                    questions.Add(hardCatList[i]);
                 }
             }
 
@@ -82,13 +83,14 @@ namespace EntityFramework.Controllers
             {
                
                 return View(db.Question.Where(c => questions.Contains(1000000000)).ToList());
+                
             } else
             {
-                QuestionQuiz q = new QuestionQuiz();
 
+                QuestionQuiz q = new QuestionQuiz();
                 foreach (var item in questions)
                 {
-
+                    
                     q.QuestionId = item;
                     q.QuizId = quizId;
                     db.QuestionQuiz.Add(q);
@@ -98,6 +100,7 @@ namespace EntityFramework.Controllers
 
                 Debug.WriteLine("Id:" + quizId);
                 ViewData["answers"] = db.ItemOption.ToList();
+                personId = quizId;
 
 
                 return View(db.Question.Where(c => questions.Contains(c.QuestionId)).ToList());
@@ -105,16 +108,30 @@ namespace EntityFramework.Controllers
 
            
         }
+        
 
 
-
-        public IActionResult Score(int question)
+        public IActionResult Score(IFormCollection form)
         {
-            Debug.WriteLine("Answer: " + question );
+            Debug.WriteLine("Answer: " + form["question"]);
+            string value = form["question"];
+            string[] result = value.Split(',');
+            
+            foreach (string res in result)
+            {
+                //Debug.WriteLine("Raspuns: " + res);
+                Answer a = new Answer();
+                a.OptionId = Int32.Parse(res);
+                a.QuizId = personId;
+                db.Answer.Add(a);
+                db.SaveChanges();
+            }
 
-            return View();
+
+
+            return View(db.ItemOption.Include(q => q.Question).Where(c => result.Contains(c.OptionId.ToString())).ToList());
         }
-
+        
 
 
 

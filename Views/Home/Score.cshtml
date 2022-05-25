@@ -1,6 +1,45 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model IEnumerable<EntityFramework.Models.ItemOption>
 @{
+	int total = 0;
 }
-<p>This is the score</p>
+<div class="table-responsive">
+ <table class="table">
+	 <thead>
+		<tr>
+			<td>The question</td>
+			<td>Your answer</td>
+			<td>Correct?</td>
+		</tr> 
+	 </thead>
+	 <tbody>
+ @foreach(ItemOption q in Model) {
+			if (q.IsRight == true)
+			{
+				total++;
+			}
+		<tr>
+			<td>
+				@q.Question.Text
+			</td>
+			<td>
+				@q.Text
+			</td>
+			<td>
+				@q.IsRight
+			</td>
+			
+		</tr>
+		 
+	
+ }
+ </tbody>
+ <tfoot>
+	<tr>
+		<td></td>
+		<td>Total:</td>
+		<td>@total</td>
+	</tr>
+</tfoot>
+ 
+  </table>
+  </div>

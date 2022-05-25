@@ -13,19 +13,21 @@
     
     @foreach(Question q in Model)
     {
-        <div class="form-group">
-            <label>@q.Text</label>
-            <select name="question">
-                @foreach (var answer in (ViewData["Answers"] as IEnumerable<ItemOption>).Where(x => x.QuestionId == q.QuestionId))
-                {
-                    <option value="@answer.OptionId">@answer.Text</option>
-                }
-            </select>
+        <div class="form-group mb-2 row">
+            <label class="col-sm-8 col-form-label">@q.Text</label>
+            <div class="col-sm-4">
+                <select name="question">
+                    @foreach (var answer in (ViewData["Answers"] as IEnumerable<ItemOption>).Where(x => x.QuestionId == q.QuestionId))
+                    {
+                        <option value="@q.QuestionId">@answer.Text</option>
+                    }
+                </select>
+            </div>
         </div>
         
     }
     
-  <input type="submit" value="Submit" />
+  <input type="submit" value="Submit" class="btn btn-primary mb-2" />
 </form> 
 } else {
     <h1>The user already has questions</h1>
