@@ -99,7 +99,7 @@ namespace EntityFramework.Controllers
                 }
 
                 Debug.WriteLine("Id:" + quizId);
-                ViewData["answers"] = db.ItemOption.ToList();
+                ViewData["answers"] = db.ItemOption;
                 personId = quizId;
 
 
@@ -116,6 +116,7 @@ namespace EntityFramework.Controllers
             Debug.WriteLine("Answer: " + form["question"]);
             string value = form["question"];
             string[] result = value.Split(',');
+     
             
             foreach (string res in result)
             {
@@ -125,11 +126,18 @@ namespace EntityFramework.Controllers
                 a.QuizId = personId;
                 db.Answer.Add(a);
                 db.SaveChanges();
+                Debug.WriteLine("Option ID: " + res);
             }
 
+            var answerTableInterogation = db.Answer.Where(c => c.QuizId == personId).Select(c=> c.OptionId).ToList();
+            foreach (var item in answerTableInterogation)
+            {
+                Debug.WriteLine("Answer table: " + item);
+            }
+            
+            
 
-
-            return View(db.ItemOption.Include(q => q.Question).Where(c => result.Contains(c.OptionId.ToString())).ToList());
+            return View(db.ItemOption.Include(q => q.Question).Where(c => answerTableInterogation.Contains(c.OptionId)).ToList());
         }
         
 

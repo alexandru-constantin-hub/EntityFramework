@@ -19,9 +19,9 @@
                 <select name="question">
                     @foreach (var answer in (ViewData["Answers"] as IEnumerable<ItemOption>).Where(x => x.QuestionId == q.QuestionId))
                     {
-                        <option value="@q.QuestionId">@answer.Text</option>
+                        <option value="@answer.OptionId">@answer.Text</option>
                     }
-                </select>
+                </select>   
             </div>
         </div>
         
